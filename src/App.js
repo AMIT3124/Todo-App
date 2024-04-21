@@ -38,6 +38,32 @@ function App() {
 
 
   }
+
+  const [completedTodos, setCompletedTodos] = useState([]);
+
+  const handleCompletedTodo = (index) => {
+    let now = new Date();
+    let date = now.getDate();
+    let month = now.getMonth();
+    let year = now.getFullYear();
+    let hour = now.getHours();
+    let minute = now.getMinutes();
+    let second = now.getSeconds();
+    let completedOn = date + '-' + month + '-' + year + 'at' + hour + ':' + minute + ':' + second;
+
+    let filterItem = {
+      ...alltodos[index],
+      completedOn: completedOn,
+
+    }
+    let UpdatedComletedArr = [...completedTodos];
+    UpdatedComletedArr.push(filterItem)
+    setCompletedTodos(UpdatedComletedArr);
+
+
+
+
+  }
   return (
     <div>
       <h1>My todos</h1>
@@ -74,7 +100,7 @@ function App() {
         </div>
         <div className='todolist'>
 
-          {alltodos.map((item, index) => {
+          {isCompleteScreen === false && alltodos.map((item, index) => {
             return (
               <div className='todolist-item' key={index.toString()}>
                 <div>
@@ -87,13 +113,30 @@ function App() {
 
                   </div>
                   <div className='check'>
-                    <TiTick />
+                    <TiTick onClick={() => { handleCompletedTodo(index) }} />
                   </div>
                 </div>
               </div>
             )
           })}
+          {isCompleteScreen === true && completedTodos.map((item, index) => {
+            return (
+              <div className='todolist-item' key={index.toString()}>
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                  <p><small>{item.completedOn}</small></p>
+                </div>
+                <div className='icon'>
+                  <div className='delete'>
+                    <AiFillDelete onClick={() => { handleDelete(index) }} />
 
+                  </div>
+
+                </div>
+              </div>
+            )
+          })}
 
         </div>
       </div>
