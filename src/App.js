@@ -24,8 +24,12 @@ function App() {
   }
   useEffect(() => {
     let saveTodo = JSON.parse(localStorage.getItem('todolist'));
+    let saveCompletedTodo = JSON.parse(localStorage.getItem('competedTodo'));
     if (saveTodo) {
       setAlltodos(saveTodo);
+    }
+    if (saveCompletedTodo) {
+      setCompletedTodos(saveCompletedTodo);
     }
   }, [])
 
@@ -33,10 +37,15 @@ function App() {
     let reducedTodo = [...alltodos];
     reducedTodo.splice(index, 1);// delete 1 element at specific index
 
-    localStorage.setItem('todolist', JSON.stringify(reducedTodo));
     setAlltodos(reducedTodo);
 
 
+  }
+
+  const handleDeleteCompleted = (index) => {
+    let reducedCompletedTodo = [...completedTodos];
+    reducedCompletedTodo.splice(index, 1);
+    setCompletedTodos(reducedCompletedTodo);
   }
 
   const [completedTodos, setCompletedTodos] = useState([]);
@@ -60,6 +69,7 @@ function App() {
     UpdatedComletedArr.push(filterItem)
     setCompletedTodos(UpdatedComletedArr);
 
+    localStorage.setItem('competedTodo', JSON.stringify(UpdatedComletedArr));
 
 
 
@@ -70,7 +80,7 @@ function App() {
       <div className='todo-wrapper'>
         <div className='todoInput'>
           <div className='todoInputItem'>
-            <label>title</label>
+            <label>Title</label>
             <input
               type='text'
               placeholder='what is the title'
@@ -129,7 +139,7 @@ function App() {
                 </div>
                 <div className='icon'>
                   <div className='delete'>
-                    <AiFillDelete onClick={() => { handleDelete(index) }} />
+                    <AiFillDelete onClick={() => { handleDeleteCompleted(index) }} />
 
                   </div>
 
